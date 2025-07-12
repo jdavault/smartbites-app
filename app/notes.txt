@@ -1,0 +1,2 @@
+<Text style={{ fontWeight: 'bold' }}>SmartBites</Text>
+<Text>™</Text>

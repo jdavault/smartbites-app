@@ -1,0 +1,54 @@
+{
+  "cli": {
+    "version": ">= 3.16.4",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_OPENAI_API_KEY": "$EXPO_PUBLIC_OPENAI_API_KEY",
+        "EXPO_PUBLIC_SMART_BITES_DATABASE_ID": "$EXPO_PUBLIC_SMART_BITES_DATABASE_ID",
+        "EXPO_PUBLIC_USER_RECIPES_COLLECTION_ID": "$EXPO_PUBLIC_USER_RECIPES_COLLECTION_ID",
+        "EXPO_PUBLIC_RECIPES_COLLECTION_ID": "$EXPO_PUBLIC_RECIPES_COLLECTION_ID",
+        "EXPO_PUBLIC_USER_ALLERGENS_COLLECTION_ID": "$EXPO_PUBLIC_USER_ALLERGENS_COLLECTION_ID",
+        "EXPO_PUBLIC_USER_SEARCH_HISTORY_COLLECTION_ID": "$EXPO_PUBLIC_USER_SEARCH_HISTORY_COLLECTION_ID",
+        "EXPO_PUBLIC_ALLERGENS_COLLECTION_ID": "$EXPO_PUBLIC_ALLERGENS_COLLECTION_ID",
+        "EXPO_PUBLIC_SMART_BITES_BUCKET_ID": "$EXPO_PUBLIC_SMART_BITES_BUCKET_ID",
+        "EXPO_PUBLIC_APPWRITE_PROJECT_ID": "$EXPO_PUBLIC_APPWRITE_PROJECT_ID"
+      },
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      },
+      "environment": "development"
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "joe.davault@gmail.com",
+        "ascAppId": "6745743999",
+        "appleTeamId": "GEVW9YV737"
+      }
+    }
+  }
+}
