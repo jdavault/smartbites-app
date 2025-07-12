@@ -33,4 +33,7 @@ export const AccountClient = {
     account.createEmailPasswordSession(email, password),
   deleteSession: () => account.deleteSession('current'),
   updateName: (name: string): Promise<UserDocument> => account.updateName(name),
+  createRecovery: (email: string, url: string) => account.createRecovery(email, url),
+  updateRecovery: (userId: string, secret: string, password: string) => 
+    account.updateRecovery(userId, secret, password),
 };
