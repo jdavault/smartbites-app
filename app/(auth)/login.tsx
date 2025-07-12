@@ -189,6 +189,7 @@ export default function SignInScreen() {
     );
   };
 
+  console.log('Preview origin:', window.location.origin);
   return (
     <View style={styles.container}>
       {modalInfo.visible && (
