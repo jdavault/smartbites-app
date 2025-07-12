@@ -25,6 +25,7 @@ import { Allergen } from '@/types/allergen';
 import { getGlobalAllergen } from '@/services/recipe';
 import Spacer from '@/components/Spacer';
 import ThemedText from '@/components/ThemedText';
+import { Eye, EyeOff } from 'lucide-react-native';
 
 export interface ModalInfo {
   visible: boolean;
@@ -38,6 +39,8 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [allergens, setAllergens] = useState<Allergen[]>([]);
   const [selectedAllergens, setSelectedAllergens] = useState<Allergen[]>([]);
   const [showAllergens, setShowAllergens] = useState(false);
@@ -225,29 +228,53 @@ export default function RegisterScreen() {
 
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>
-              <TextInput
-                autoCapitalize="none"
-                placeholder="Create a password"
-                secureTextEntry
-                placeholderTextColor="#6A7679"
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword}
-                autoCorrect={false}
-              />
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  autoCapitalize="none"
+                  placeholder="Create a password"
+                  secureTextEntry={!showPassword}
+                  placeholderTextColor="#6A7679"
+                  style={styles.passwordInput}
+                  value={password}
+                  onChangeText={setPassword}
+                  autoCorrect={false}
+                />
+                <TouchableOpacity
+                  style={styles.eyeButton}
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff size={20} color={theme.accentDark} />
+                  ) : (
+                    <Eye size={20} color={theme.accentDark} />
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Confirm Password</Text>
-              <TextInput
-                autoCapitalize="none"
-                placeholder="Confirm your Password"
-                secureTextEntry
-                placeholderTextColor="#6A7679"
-                style={styles.input}
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-              />
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  autoCapitalize="none"
+                  placeholder="Confirm your Password"
+                  secureTextEntry={!showConfirmPassword}
+                  placeholderTextColor="#6A7679"
+                  style={styles.passwordInput}
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                />
+                <TouchableOpacity
+                  style={styles.eyeButton}
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} color={theme.accentDark} />
+                  ) : (
+                    <Eye size={20} color={theme.accentDark} />
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View style={{ marginTop: 8 }}>
@@ -401,6 +428,29 @@ const getStyles = (theme: typeof ColorScheme.light) =>
       fontSize: FontSizes.md,
       backgroundColor: theme.backgroundLight,
       width: '100%', // ensure full width to prevent squeezing
+    },
+    passwordContainer: {
+      position: 'relative',
+      width: '100%',
+    },
+    passwordInput: {
+      minHeight: 48,
+      borderWidth: 1,
+      borderColor: theme.border,
+      borderRadius: 8,
+      paddingHorizontal: 14,
+      paddingRight: 50, // Make room for the eye icon
+      paddingVertical: Platform.OS === 'android' ? 10 : 8,
+      fontFamily: Fonts.body,
+      fontSize: FontSizes.md,
+      backgroundColor: theme.backgroundLight,
+      width: '100%',
+    },
+    eyeButton: {
+      position: 'absolute',
+      right: 15,
+      top: 12,
+      padding: 5,
     },
 
     button: {
