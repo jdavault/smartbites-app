@@ -357,7 +357,7 @@ const getStyles = (theme: typeof ColorScheme.light) => {
     eyeButton: {
       position: 'absolute',
       right: 15,
-      top: 18,
+      top: 16,
       padding: 5,
     },
     button: {
