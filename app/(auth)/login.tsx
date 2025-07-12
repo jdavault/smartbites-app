@@ -284,7 +284,7 @@ const getStyles = (theme: typeof ColorScheme.light) => {
     },
     logoContainer: {
       alignItems: 'center',
-      marginTop: Spacing.lg,
+      marginTop: Spacing.md,
       marginBottom: Spacing.xl,
     },
     logoText: {
