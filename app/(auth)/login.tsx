@@ -279,12 +279,12 @@ const getStyles = (theme: typeof ColorScheme.light) => {
     scrollContent: {
       flexGrow: 1,
       alignItems: 'center', // center the child form
-      paddingVertical: Spacing.xxl,
+      paddingVertical: Spacing.lg,
       paddingHorizontal: Spacing.md,
     },
     logoContainer: {
       alignItems: 'center',
-      marginTop: Spacing.xxl,
+      marginTop: Spacing.lg,
       marginBottom: Spacing.xl,
     },
     logoText: {
