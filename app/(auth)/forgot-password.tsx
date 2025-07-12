@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -38,7 +38,9 @@ export default function ForgotPasswordScreen() {
 
   const router = useRouter();
   const { colors: theme } = useTheme();
-  const styles = getStyles(theme);
+
+  // ✅ Fix: memoize styles so they don't re-generate every render
+  const styles = useMemo(() => getStyles(theme), [theme]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -68,21 +70,25 @@ export default function ForgotPasswordScreen() {
 
     setSubmitting(true);
     try {
-      // Create recovery URL - works for both web and mobile
-      const resetUrl = Platform.OS === 'web' 
-        ? `${window.location.origin}/reset-password`
-        : 'myapp://reset-password';
+      const resetPasswordUrl = 'https://smartbites.cooking';
+      const resetUrl =
+        Platform.OS === 'web'
+          ? `${resetPasswordUrl}/reset-password`
+          : 'myapp://reset-password';
 
       await account.createRecovery(email, resetUrl);
-      
+
       setModalInfo({
         visible: true,
         title: 'Recovery Email Sent! 📧',
-        subtitle: 'Check your email for password reset instructions. The link will expire in 1 hour.',
+        subtitle:
+          'Check your email for password reset instructions. The link will expire in 1 hour.',
         emoji: '✅',
       });
     } catch (error: any) {
-      const message = error?.message?.replace(/^AppwriteException:\s*/, '') ?? 'Failed to send recovery email';
+      const message =
+        error?.message?.replace(/^AppwriteException:\s*/, '') ??
+        'Failed to send recovery email';
       setModalInfo({
         visible: true,
         title: 'Error',
@@ -141,7 +147,8 @@ export default function ForgotPasswordScreen() {
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Forgot Password?</Text>
             <Text style={styles.subheaderText}>
-              No worries! Enter your email and we'll send you reset instructions.
+              No worries! Enter your email and we'll send you reset
+              instructions.
             </Text>
           </View>
 
