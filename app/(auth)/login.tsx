@@ -284,8 +284,8 @@ const getStyles = (theme: typeof ColorScheme.light) => {
     },
     logoContainer: {
       alignItems: 'center',
-      marginTop: Spacing.md,
-      marginBottom: Spacing.xl,
+      marginTop: Spacing.xs,
+      marginBottom: Spacing.md,
     },
     logoText: {
       fontFamily: Fonts.headingBold,
@@ -306,7 +306,7 @@ const getStyles = (theme: typeof ColorScheme.light) => {
       flexWrap: 'wrap', // <- not strictly necessary, but safe
     },
     formContainer: {
-      marginTop: Spacing.lg,
+      marginTop: Spacing.sm,
       paddingHorizontal: Spacing.lg,
       width: '100%', // ✅ full width of parent
       alignSelf: 'stretch',
@@ -323,7 +323,7 @@ const getStyles = (theme: typeof ColorScheme.light) => {
       fontSize: FontSizes.sm,
     },
     inputContainer: {
-      marginBottom: Spacing.lg,
+      marginBottom: Spacing.md,
     },
     label: {
       fontFamily: Fonts.body,
@@ -374,7 +374,7 @@ const getStyles = (theme: typeof ColorScheme.light) => {
       borderRadius: 8,
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: Spacing.md,
+      marginTop: Spacing.sm,
       width: Platform.OS === 'web' ? '100%' : 'auto', // ✅ full width only on web
       maxWidth: Platform.OS === 'web' ? MAX_INPUT_WIDTH : undefined, // optional: limit max
     },
@@ -386,7 +386,7 @@ const getStyles = (theme: typeof ColorScheme.light) => {
     divider: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: Spacing.xl,
+      marginVertical: Spacing.md,
     },
     dividerLine: {
       flex: 1,
@@ -406,7 +406,7 @@ const getStyles = (theme: typeof ColorScheme.light) => {
       alignItems: 'center',
       borderWidth: 1,
       borderColor: theme.accent,
-      marginBottom: Spacing.lg,
+      marginBottom: Spacing.md,
       width: Platform.OS === 'web' ? '100%' : 'auto', // ✅ full width only on web
       maxWidth: Platform.OS === 'web' ? MAX_INPUT_WIDTH : undefined,
     },
@@ -418,7 +418,7 @@ const getStyles = (theme: typeof ColorScheme.light) => {
     footer: {
       flexDirection: 'row',
       justifyContent: 'center',
-      marginTop: Spacing.lg,
+      marginTop: Spacing.md,
     },
     footerText: {
       fontFamily: Fonts.body,
