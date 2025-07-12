@@ -199,6 +199,14 @@ export default function SignInScreen() {
               </TouchableOpacity>
             </Link>
           </View>
+
+          <View style={styles.forgotPasswordContainer}>
+            <Link href="/forgot-password" asChild>
+              <TouchableOpacity>
+                <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
         </View>
       </View>
     );
@@ -455,6 +463,16 @@ const getStyles = (theme: typeof ColorScheme.light) => {
     emoji: {
       fontSize: 40,
       marginBottom: 12,
+    },
+    forgotPasswordContainer: {
+      alignItems: 'center',
+      marginTop: Spacing.md,
+    },
+    forgotPasswordLink: {
+      fontFamily: Fonts.body,
+      fontSize: FontSizes.sm,
+      color: theme.primary,
+      textDecorationLine: 'underline',
     },
   });
 };
