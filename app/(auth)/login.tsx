@@ -19,6 +19,7 @@ import { Fonts, FontSizes } from '@/constants/Typography';
 import { useTheme } from '@/context/ThemeContext';
 import { Colors, ColorScheme } from '@/constants/Colors';
 import ThemedText from '@/components/ThemedText';
+import { Eye, EyeOff } from 'lucide-react-native';
 
 export type ModalInfo = {
   visible: boolean;
@@ -32,6 +33,7 @@ export const MAX_INPUT_WIDTH = 360; // adjust to your preferred max
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [submitting, setSubmitting] = useState(false);
@@ -47,6 +49,7 @@ export default function SignInScreen() {
   const styles = getStyles(ColorScheme.light);
 
   const handleSubmit = async () => {
+    console.log('Preview origin:', window.location.origin);
     setSubmitting(true);
     if (!email || !password) {
       setModalInfo({
@@ -131,18 +134,30 @@ export default function SignInScreen() {
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password</Text>
-            <TextInput
-              autoCapitalize="none"
-              style={styles.input}
-              value={password}
-              secureTextEntry
-              onChangeText={setPassword}
-              placeholder="Enter a password"
-              placeholderTextColor="#6A7679"
-              returnKeyType="done"
-              blurOnSubmit={true}
-              onSubmitEditing={handleSubmit}
-            />
+            <View style={styles.passwordContainer}>
+              <TextInput
+                autoCapitalize="none"
+                style={styles.passwordInput}
+                value={password}
+                secureTextEntry={!showPassword}
+                onChangeText={setPassword}
+                placeholder="Enter a password"
+                placeholderTextColor="#6A7679"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onSubmitEditing={handleSubmit}
+              />
+              <TouchableOpacity
+                style={styles.eyeButton}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff size={20} color={theme.accentDark} />
+                ) : (
+                  <Eye size={20} color={theme.accentDark} />
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
 
           <TouchableOpacity
@@ -189,6 +204,7 @@ export default function SignInScreen() {
     );
   };
 
+  console.log('Preview origin:', window.location.origin);
   return (
     <View style={styles.container}>
       {modalInfo.visible && (
@@ -321,6 +337,28 @@ const getStyles = (theme: typeof ColorScheme.light) => {
       backgroundColor: theme.backgroundLight,
       width: '100%',
       //maxWidth: MAX_INPUT_WIDTH, // ✅ constrain for larger screens
+    },
+    passwordContainer: {
+      position: 'relative',
+      width: '100%',
+    },
+    passwordInput: {
+      height: 56,
+      borderWidth: 1,
+      borderColor: theme.accent,
+      borderRadius: 8,
+      paddingHorizontal: Spacing.md,
+      paddingRight: 50, // Make room for the eye icon
+      fontFamily: Fonts.body,
+      fontSize: FontSizes.md,
+      backgroundColor: theme.backgroundLight,
+      width: '100%',
+    },
+    eyeButton: {
+      position: 'absolute',
+      right: 15,
+      top: 16,
+      padding: 5,
     },
     button: {
       backgroundColor: theme.primary,
