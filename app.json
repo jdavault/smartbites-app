@@ -8,6 +8,11 @@
     "scheme": "myapp",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    },
     "platforms": ["ios", "android", "web"],
     "splash": {
       "image": "./assets/images/splash.png",
