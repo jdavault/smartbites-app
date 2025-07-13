@@ -10,17 +10,11 @@ export async function login(email: string, password: string): Promise<User> {
     if (e.code !== 401) throw e;
   });
 
-  const session = await AccountClient.createSession(email, password);
-  
-  // Save session ID for persistence
-  await saveSessionJWT(session.$id);
-  
+  await AccountClient.createSession(email, password);
   return await fetchCurrentUser();
 }
 
 export async function logout(): Promise<void> {
-  // Clear stored session
-  await deleteSessionJWT();
   await AccountClient.deleteSession();
 }
 

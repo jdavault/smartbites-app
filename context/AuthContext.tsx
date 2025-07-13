@@ -15,8 +15,6 @@ import {
   registerFullUser,
 } from '@/services/userService';
 import { Allergen } from '@/types/allergen';
-import { getSessionJWT, deleteSessionJWT } from '@/services/sessionStorage';
-import { AccountClient } from '@/libs/appwrite/accountClient';
 const router = useRouter();
 
 type AuthContextType = {
@@ -118,39 +116,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const loadUser = async () => {
       try {
-        // Check if we have a stored session ID
-        const storedSessionId = await getSessionJWT();
-        
-        if (storedSessionId) {
-          // Try to verify the session is still valid
-          try {
-            const user = await fetchCurrentUser();
-            if (user) {
-              const mappedUser: User = {
-                $id: user.$id,
-                email: user.email,
-                name: user.name,
-                firstName: user.name?.split(' ')[0],
-                lastName: user.name?.split(' ').slice(1).join(' '),
-              };
-              setUser(mappedUser);
-              setIsLoading(false);
-              setAuthChecked(true);
-              return;
-            }
-          } catch (sessionError) {
-            // Session is invalid, clear it
-            console.log('Stored session is invalid, clearing...');
-            await deleteSessionJWT();
-          }
+        const user = await fetchCurrentUser();
+        if (user) {
+          const mappedUser: User = {
+            $id: user.$id,
+            email: user.email,
+            name: user.name,
+            firstName: user.name?.split(' ')[0],
+            lastName: user.name?.split(' ').slice(1).join(' '),
+          };
+          setUser(mappedUser);
+        } else {
+          setUser(null);
         }
-        
-        // No valid session found, user needs to log in
-        setUser(null);
       } catch {
         setUser(null);
       } finally {
-        setIsLoading(false); // ✅ ALWAYS set it
+        setIsLoading(false);
         setAuthChecked(true);
       }
     };

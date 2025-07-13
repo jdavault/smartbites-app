@@ -29,11 +29,11 @@ export const AccountClient = {
   get: () => account.get(),
   create: (email: string, password: string) =>
     account.create(ID.unique(), email, password),
-  createSession: (email: string, password: string) => 
+  createSession: (email: string, password: string) =>
     account.createEmailPasswordSession(email, password),
   deleteSession: () => account.deleteSession('current'),
   updateName: (name: string): Promise<UserDocument> => account.updateName(name),
   createRecovery: (email: string, url: string) => account.createRecovery(email, url),
-  updateRecovery: (userId: string, secret: string, password: string) => 
+  updateRecovery: (userId: string, secret: string, password: string) =>
     account.updateRecovery(userId, secret, password),
 };
