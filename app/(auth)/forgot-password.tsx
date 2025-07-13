@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -20,6 +20,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { Colors, ColorScheme } from '@/constants/Colors';
 import ThemedText from '@/components/ThemedText';
 import { account } from '@/libs/appwrite/config';
+import * as Device from 'expo-device';
 
 export type ModalInfo = {
   visible: boolean;
@@ -36,9 +37,13 @@ export default function ForgotPasswordScreen() {
     title: '',
   });
 
+  const isSimulator =
+    Platform.OS !== 'web' && Device.isDevice === false && __DEV__;
   const router = useRouter();
   const { colors: theme } = useTheme();
-  const styles = getStyles(theme);
+
+  // ✅ Fix: memoize styles so they don't re-generate every render
+  const styles = useMemo(() => getStyles(theme), [theme]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -68,21 +73,30 @@ export default function ForgotPasswordScreen() {
 
     setSubmitting(true);
     try {
-      // Create recovery URL - works for both web and mobile
-      const resetUrl = Platform.OS === 'web' 
-        ? `${window.location.origin}/reset-password`
-        : 'myapp://reset-password';
+      const resetUrl = 'https://smartbites.cooking/reset-password';
+      // Platform.OS === 'web'
+      //   ? __DEV__
+      //     ? 'http://localhost:8081/reset-password'
+      //     : 'https://smartbites.cooking/reset-password'
+      //   : isSimulator && __DEV__
+      //   ? 'http://localhost:8081/reset-password'
+      //   : 'https://smartbites.cooking/reset-password';
+
+      console.log('Preview origin:', resetUrl);
 
       await account.createRecovery(email, resetUrl);
-      
+
       setModalInfo({
         visible: true,
         title: 'Recovery Email Sent! 📧',
-        subtitle: 'Check your email for password reset instructions. The link will expire in 1 hour.',
+        subtitle:
+          'Check your email for password reset instructions. The link will expire in 1 hour.',
         emoji: '✅',
       });
     } catch (error: any) {
-      const message = error?.message?.replace(/^AppwriteException:\s*/, '') ?? 'Failed to send recovery email';
+      const message =
+        error?.message?.replace(/^AppwriteException:\s*/, '') ??
+        'Failed to send recovery email';
       setModalInfo({
         visible: true,
         title: 'Error',
@@ -141,7 +155,8 @@ export default function ForgotPasswordScreen() {
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Forgot Password?</Text>
             <Text style={styles.subheaderText}>
-              No worries! Enter your email and we'll send you reset instructions.
+              No worries! Enter your email and we'll send you reset
+              instructions.
             </Text>
           </View>
 

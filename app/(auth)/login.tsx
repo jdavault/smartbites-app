@@ -49,7 +49,6 @@ export default function SignInScreen() {
   const styles = getStyles(ColorScheme.light);
 
   const handleSubmit = async () => {
-    console.log('Preview origin:', window.location.origin);
     setSubmitting(true);
     if (!email || !password) {
       setModalInfo({
@@ -212,7 +211,6 @@ export default function SignInScreen() {
     );
   };
 
-  console.log('Preview origin:', window.location.origin);
   return (
     <View style={styles.container}>
       {modalInfo.visible && (
