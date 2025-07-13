@@ -118,13 +118,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const loadUser = async () => {
       try {
-        // Check if we have a stored session
-        const storedJWT = await getSessionJWT();
+        // Check if we have a stored session ID
+        const storedSessionId = await getSessionJWT();
         
-        if (storedJWT) {
-          // Try to restore session with stored JWT
+        if (storedSessionId) {
+          // Try to verify the session is still valid
           try {
-            // Verify the session is still valid by fetching current user
             const user = await fetchCurrentUser();
             if (user) {
               const mappedUser: User = {
@@ -146,18 +145,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           }
         }
         
-        // No valid session found
-        const user = await fetchCurrentUser();
-        if (user) {
-          const mappedUser: User = {
-            $id: user.$id,
-            email: user.email,
-            name: user.name,
-            firstName: user.name?.split(' ')[0],
-            lastName: user.name?.split(' ').slice(1).join(' '),
-          };
-          setUser(mappedUser);
-        }
+        // No valid session found, user needs to log in
+        setUser(null);
       } catch {
         setUser(null);
       } finally {

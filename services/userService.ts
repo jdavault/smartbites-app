@@ -12,10 +12,8 @@ export async function login(email: string, password: string): Promise<User> {
 
   const session = await AccountClient.createSession(email, password);
   
-  // Save session JWT for persistence
-  if (session.secret) {
-    await saveSessionJWT(session.secret);
-  }
+  // Save session ID for persistence
+  await saveSessionJWT(session.$id);
   
   return await fetchCurrentUser();
 }
