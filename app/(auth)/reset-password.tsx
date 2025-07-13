@@ -4,16 +4,13 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   View,
   Platform,
   ActivityIndicator,
   Modal,
-  TouchableWithoutFeedback,
-  Keyboard,
   SafeAreaView,
 } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { Spacing } from '@/constants/Spacing';
 import { Fonts, FontSizes } from '@/constants/Typography';
 import { useTheme } from '@/context/ThemeContext';
@@ -40,20 +37,25 @@ export default function ResetPasswordScreen() {
     title: '',
   });
 
-  const router = useRouter();
+  const [statusTitle, setStatusTitle] = useState('');
+  const [statusSubtitle, setStatusSubtitle] = useState('');
+  const [statusEmoji, setStatusEmoji] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
+
   const { userId, secret } = useLocalSearchParams();
   const { colors: theme } = useTheme();
   const styles = getStyles(theme);
 
   useEffect(() => {
-    // Check if we have the required parameters
     if (!userId || !secret) {
       setModalInfo({
         visible: true,
         title: 'Invalid Reset Link',
-        subtitle: 'This password reset link is invalid or has expired. Please request a new one.',
+        subtitle:
+          'This password reset link is invalid or has expired. Please request a new one.',
         emoji: '❌',
       });
+      setIsComplete(true);
     }
   }, [userId, secret]);
 
@@ -92,9 +94,11 @@ export default function ResetPasswordScreen() {
       setModalInfo({
         visible: true,
         title: 'Invalid Reset Link',
-        subtitle: 'This password reset link is invalid. Please request a new one.',
+        subtitle:
+          'This password reset link is invalid. Please request a new one.',
         emoji: '❌',
       });
+      setIsComplete(true);
       return;
     }
 
@@ -105,23 +109,25 @@ export default function ResetPasswordScreen() {
         secret as string,
         password
       );
-      
-      setModalInfo({
-        visible: true,
-        title: 'Password Reset Successful! 🎉',
-        subtitle: 'Your password has been updated. You can now sign in with your new password.',
-        emoji: '✅',
-      });
+
+      setStatusTitle('Password Reset Successful! 🎉');
+      setStatusSubtitle(
+        'Your password has been updated. You can now return to the SmartBites app and sign in with your new password.'
+      );
+      setStatusEmoji('✅');
+      setIsComplete(true);
     } catch (error: any) {
-      const message = error?.message?.replace(/^AppwriteException:\s*/, '') ?? 'Failed to reset password';
-      setModalInfo({
-        visible: true,
-        title: 'Reset Failed',
-        subtitle: message.includes('expired') 
+      const message =
+        error?.message?.replace(/^AppwriteException:\s*/, '') ??
+        'Failed to reset password';
+      setStatusTitle('Reset Failed');
+      setStatusSubtitle(
+        message.includes('expired')
           ? 'This reset link has expired. Please request a new password reset.'
-          : message,
-        emoji: '❌',
-      });
+          : message
+      );
+      setStatusEmoji('❌');
+      setIsComplete(true);
     } finally {
       setSubmitting(false);
     }
@@ -129,9 +135,6 @@ export default function ResetPasswordScreen() {
 
   const handleModalClose = () => {
     setModalInfo({ ...modalInfo, visible: false });
-    if (modalInfo.title.includes('Successful') || modalInfo.title.includes('Invalid')) {
-      router.replace('/login');
-    }
   };
 
   return (
@@ -143,41 +146,29 @@ export default function ResetPasswordScreen() {
           visible={modalInfo.visible}
           onRequestClose={handleModalClose}
         >
-          <TouchableWithoutFeedback onPress={handleModalClose}>
-            <View style={styles.modalOverlay}>
-              <View style={styles.modalContent}>
-                {modalInfo.emoji && (
-                  <Text style={styles.emoji}>{modalInfo.emoji}</Text>
-                )}
-                <Text style={styles.modalTitle}>{modalInfo.title}</Text>
-                {modalInfo.subtitle && (
-                  <Text style={styles.modalSubtitle}>{modalInfo.subtitle}</Text>
-                )}
-              </View>
+          <View style={styles.modalOverlay} onTouchEnd={handleModalClose}>
+            <View style={styles.modalContent}>
+              {modalInfo.emoji && (
+                <Text style={styles.emoji}>{modalInfo.emoji}</Text>
+              )}
+              <Text style={styles.modalTitle}>{modalInfo.title}</Text>
+              {modalInfo.subtitle && (
+                <Text style={styles.modalSubtitle}>{modalInfo.subtitle}</Text>
+              )}
             </View>
-          </TouchableWithoutFeedback>
+          </View>
         </Modal>
       )}
 
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-        >
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => router.replace('/login')}
-          >
-            <Text style={styles.backButtonText}>← Back to Login</Text>
-          </TouchableOpacity>
+      <View style={styles.scrollContent}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Reset Password</Text>
+          <Text style={styles.subheaderText}>
+            {isComplete ? 'Status' : 'Enter your new password below.'}
+          </Text>
+        </View>
 
-          <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>Reset Password</Text>
-            <Text style={styles.subheaderText}>
-              Enter your new password below.
-            </Text>
-          </View>
-
+        {!isComplete && (
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>New Password</Text>
@@ -216,7 +207,6 @@ export default function ResetPasswordScreen() {
                   style={styles.passwordInput}
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
-                  onSubmitEditing={handleSubmit}
                 />
                 <TouchableOpacity
                   style={styles.eyeButton}
@@ -242,21 +232,35 @@ export default function ResetPasswordScreen() {
                 <Text style={styles.buttonText}>Update Password</Text>
               )}
             </TouchableOpacity>
-
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>Remember your password? </Text>
-              <TouchableOpacity onPress={() => router.replace('/login')}>
-                <Text style={styles.footerLink}>Sign In</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
+        )}
 
-      <ThemedText style={{ fontSize: 14, textAlign: 'center', margin: 24 }}>
-        <Text style={{ fontWeight: 'bold' }}>SmartBites</Text>
-        <Text>™ © 2025</Text>
-      </ThemedText>
+        {isComplete && (
+          <View
+            style={{
+              marginTop: 40,
+              alignItems: 'center',
+              paddingHorizontal: 20,
+            }}
+          >
+            <Text style={styles.modalTitle}>{statusTitle}</Text>
+            {statusSubtitle && (
+              <Text style={styles.modalSubtitle}>{statusSubtitle}</Text>
+            )}
+            <Text style={{ marginTop: 20, textAlign: 'center' }}>
+              You can now return to the SmartBites app and log in with your new
+              password.
+            </Text>
+          </View>
+        )}
+      </View>
+
+      {!isComplete && (
+        <ThemedText style={{ fontSize: 14, textAlign: 'center', margin: 24 }}>
+          <Text style={{ fontWeight: 'bold' }}>SmartBites</Text>
+          <Text>™ © 2025</Text>
+        </ThemedText>
+      )}
     </SafeAreaView>
   );
 }
@@ -271,15 +275,6 @@ const getStyles = (theme: typeof ColorScheme.light) =>
     scrollContent: {
       flexGrow: 1,
       padding: Spacing.lg,
-    },
-    backButton: {
-      alignSelf: 'flex-start',
-      marginBottom: Spacing.sm,
-    },
-    backButtonText: {
-      fontFamily: Fonts.body,
-      fontSize: FontSizes.md,
-      color: theme.primary,
     },
     headerContainer: {
       marginBottom: Spacing.xl,
@@ -346,21 +341,6 @@ const getStyles = (theme: typeof ColorScheme.light) =>
       color: Colors.white,
       fontFamily: Fonts.bodyBold,
       fontSize: FontSizes.md,
-    },
-    footer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      marginTop: Spacing.xl,
-    },
-    footerText: {
-      fontFamily: Fonts.body,
-      fontSize: FontSizes.md,
-      color: Colors.dark[700],
-    },
-    footerLink: {
-      fontFamily: Fonts.bodyBold,
-      fontSize: FontSizes.md,
-      color: theme.primary,
     },
     modalOverlay: {
       flex: 1,
