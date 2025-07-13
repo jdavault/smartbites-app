@@ -15,6 +15,8 @@ import {
   registerFullUser,
 } from '@/services/userService';
 import { Allergen } from '@/types/allergen';
+import { getSessionJWT, deleteSessionJWT } from '@/services/sessionStorage';
+import { AccountClient } from '@/libs/appwrite/accountClient';
 const router = useRouter();
 
 type AuthContextType = {
@@ -116,6 +118,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const loadUser = async () => {
       try {
+        // Check if we have a stored session
+        const storedJWT = await getSessionJWT();
+        
+        if (storedJWT) {
+          // Try to restore session with stored JWT
+          try {
+            // Verify the session is still valid by fetching current user
+            const user = await fetchCurrentUser();
+            if (user) {
+              const mappedUser: User = {
+                $id: user.$id,
+                email: user.email,
+                name: user.name,
+                firstName: user.name?.split(' ')[0],
+                lastName: user.name?.split(' ').slice(1).join(' '),
+              };
+              setUser(mappedUser);
+              setIsLoading(false);
+              setAuthChecked(true);
+              return;
+            }
+          } catch (sessionError) {
+            // Session is invalid, clear it
+            console.log('Stored session is invalid, clearing...');
+            await deleteSessionJWT();
+          }
+        }
+        
+        // No valid session found
         const user = await fetchCurrentUser();
         if (user) {
           const mappedUser: User = {
@@ -127,7 +158,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           };
           setUser(mappedUser);
         }
-        setIsLoading(false);
       } catch {
         setUser(null);
       } finally {

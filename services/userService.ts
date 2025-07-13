@@ -3,17 +3,26 @@ import { User } from '@/types/user';
 import { saveUserAllergens } from './allergenServices';
 import { Allergen } from '@/types/allergen';
 import { UserClient } from '@/libs/appwrite/userClient';
+import { saveSessionJWT, deleteSessionJWT } from './sessionStorage';
 
 export async function login(email: string, password: string): Promise<User> {
   await AccountClient.deleteSession().catch((e) => {
     if (e.code !== 401) throw e;
   });
 
-  await AccountClient.createSession(email, password);
+  const session = await AccountClient.createSession(email, password);
+  
+  // Save session JWT for persistence
+  if (session.secret) {
+    await saveSessionJWT(session.secret);
+  }
+  
   return await fetchCurrentUser();
 }
 
 export async function logout(): Promise<void> {
+  // Clear stored session
+  await deleteSessionJWT();
   await AccountClient.deleteSession();
 }
 
