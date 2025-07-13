@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Platform,
   Image,
+  RefreshControl,
 } from 'react-native';
 
 import IconLogo from '@/assets/images/smart-bites-logo.png';
@@ -19,6 +20,7 @@ import { Spacing } from '@/constants/Spacing';
 import { Fonts, FontSizes } from '@/constants/Typography';
 import { Allergen } from '@/types/allergen';
 import { Recipe } from '@/types/recipes';
+import { useCallback, useState } from 'react';
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -35,6 +37,20 @@ export default function HomeScreen() {
     removeFeaturedRecipe,
   } = useRecipes();
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      if (user?.$id) {
+        await Promise.all([getRecipes(user?.$id)]);
+      }
+    } catch (error) {
+      console.error('Error refreshing:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [user]);
   const handleSaveRecipe = async (recipe: Recipe) => {
     if (!recipe) return;
 
@@ -86,7 +102,12 @@ export default function HomeScreen() {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.background }]}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
         <View style={[styles.header, { backgroundColor: theme.card }]}>
           <View>
             <Text style={[styles.greeting, { color: theme.textPrimary }]}>
