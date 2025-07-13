@@ -2,7 +2,7 @@
   "expo": {
     "name": "SmartBites",
     "slug": "allergy-aware-recipe-finder",
-    "version": "1.0.5",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -43,7 +43,7 @@
     },
     "android": {
       "package": "cooking.safeplate.allergyawarerecipefinder",
-      "versionCode": 15,
+      "versionCode": 16,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon-android.png",
         "backgroundColor": "#f9f8f2"

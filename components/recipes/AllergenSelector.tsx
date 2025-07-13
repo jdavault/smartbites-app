@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
+import { View, Text, Switch, StyleSheet, Platform } from 'react-native';
 import { Allergen } from '@/types/allergen';
 import { Spacing } from '@/constants/Spacing';
 import { Fonts, FontSizes } from '@/constants/Typography';
@@ -44,6 +44,13 @@ const AllergenSelector: React.FC<Props> = ({
               false: theme.backgroundLight,
               true: theme.primary,
             }}
+            thumbColor={
+              Platform.OS === 'android'
+                ? selected.some((a) => a.$id === allergen.$id)
+                  ? Colors.rice[100] // ✅ Active thumb color for Android
+                  : theme.background[300] // ✅ Inactive thumb color for Android
+                : undefined // ✅ Let iOS handle it
+            }
           />
         </View>
       ))}
