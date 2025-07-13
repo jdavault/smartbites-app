@@ -70,11 +70,12 @@ export default function ForgotPasswordScreen() {
 
     setSubmitting(true);
     try {
-      //const resetPasswordUrl = 'https://smartbites.cooking';
-      const resetUrl = Platform.OS === 'web' 
-        ? `${window.location.origin}/reset-password`
-        : 'myapp://reset-password';
-
+      const resetUrl =
+        Platform.OS === 'web'
+          ? __DEV__
+            ? 'http://localhost:8081/reset-password'
+            : 'https://smartbites.cooking/reset-password'
+          : 'myapp://reset-password';
       await account.createRecovery(email, resetUrl);
 
       setModalInfo({
