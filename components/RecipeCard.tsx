@@ -43,19 +43,20 @@ export default function RecipeCard(props: RecipeCardProps) {
   console.log('RecipeCard Props3:', { isFeatured, from });
 
   const allergenLabels: Record<AllergenName, string> = {
-    gluten: 'Gluten-Free',
-    dairy: 'Dairy-Free',
-    nuts: 'Nut-Free',
-    eggs: 'Egg-Free',
-    soy: 'Soy-Free',
-    shellfish: 'Shellfish-Free',
-    fish: 'Fish-Free',
+    Eggs: 'Egg-Free',
+    Fish: 'Fish-Free',
+    Milk: 'Milk-Free',
+    Peanuts: 'Peanut-Free',
+    Sesame: 'Sesame-Free',
+    Shellfish: 'Shellfish-Free',
+    Soybeans: 'Soybean-Free',
+    'Tree Nuts': 'Tree Nut-Free',
+    'Wheat (Gluten)': 'Gluten-Free',
   };
-
   // Get list of allergens this recipe is free from
   const allergenFreeLabels = Object.entries(allergenLabels)
     .filter(([allergenKey]) =>
-      (recipe.allergens ?? []).every((a) => a.name !== allergenKey)
+      (recipe.allergens ?? []).every((a) => a !== allergenKey)
     )
     .map(([_, label]) => label);
 

@@ -94,10 +94,9 @@ export async function generateRecipe(
         axiosError.response?.status === 401 ||
         axiosError.response?.status === 403
       ) {
-        console.log(
-          'Falling back to mock recipe generation due to API authentication error'
-        );
-        return generateMockRecipe(query, allergens);
+        console.log('API authentication error');
+        //return generateMockRecipe(query, allergens);
+        throw new Error('Failed to generate recipe', error);
       }
     }
 
@@ -150,7 +149,7 @@ function generateMockRecipe(
   const title = `${query} Recipe`;
   const options = {
     gluten: ['flour', 'bread', 'pasta', 'wheat'],
-    dairy: ['milk', 'cheese', 'butter', 'cream'],
+    milk: ['milk'],
     eggs: ['egg', 'mayonnaise'],
     nuts: ['almonds', 'walnuts', 'cashews', 'pistachios'],
     peanuts: ['peanut butter', 'peanuts'],
@@ -171,7 +170,7 @@ function generateMockRecipe(
     ingredients.push('8 oz pasta');
   }
 
-  if (!allergens.includes('dairy') && Math.random() > 0.5) {
+  if (!allergens.includes('milk') && Math.random() > 0.5) {
     ingredients.push('1/2 cup grated parmesan cheese');
   }
 

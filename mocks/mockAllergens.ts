@@ -21,8 +21,8 @@ export const mockAllergens: Allergen[] = [
   },
   {
     $id: '2',
-    name: 'Dairy',
-    description: 'Milk, cheese, yogurt, butter, and other dairy products.',
+    name: 'Milk',
+    description: 'Milk, cheese, yogurt, butter, and other milk products.',
   },
   {
     $id: '3',
@@ -40,7 +40,7 @@ export const mockAllergens7: Allergen[] = [
   {
     $id: '2',
     name: 'Dairy',
-    description: 'Milk, cheese, yogurt, butter, and other dairy products.',
+    description: 'Milk, cheese, yogurt, butter, and other milk products.',
   },
   {
     $id: '3',
@@ -54,7 +54,7 @@ export const mockAllergens7: Allergen[] = [
   },
   {
     $id: '5',
-    name: 'Gluten',
+    name: 'Wheat (Gluten)',
     description: 'Wheat, barley, rye, and most breads or baked goods.',
   },
   {

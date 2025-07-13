@@ -6,15 +6,15 @@ export interface Allergen {
 }
 
 export type AllergenName =
-  | 'Gluten'
-  | 'Dairy'
   | 'Eggs'
-  | 'Soy'
-  | 'Shellfish'
   | 'Fish'
-  | 'Sesame'
+  | 'Milk'
   | 'Peanuts'
-  | 'Tree Nuts';
+  | 'Sesame'
+  | 'Shellfish'
+  | 'Soybeans'
+  | 'Tree Nuts'
+  | 'Wheat (Gluten)';
 
 type SelectedAllergens = Allergen[];
 type Allergens = Allergen[];

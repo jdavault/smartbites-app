@@ -28,9 +28,9 @@ const About: React.FC = () => {
         </Text>
         <Text style={styles.paragraph}>
           Our app lets users search for and customize recipes that avoid common
-          allergens like gluten, dairy, eggs, and more. You can refine, edit,
-          and save your favorite recipes to your personal list for easy access
-          at home.
+          allergens like wheat (gluten), milk, eggs, and more. You can refine,
+          edit, and save your favorite recipes to your personal list for easy
+          access at home.
         </Text>
 
         <Text style={styles.paragraph}>

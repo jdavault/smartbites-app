@@ -8,7 +8,7 @@ export enum Difficulty {
 
 export const mockRecipe: Recipe = {
   $id: '665f8c2e9e8a0a8e2b1d1',
-  title: 'Gluten-Free Pancakes',
+  title: 'Wheat (Gluten)-Free Pancakes',
   description:
     'Fluffy pancakes made without any gluten. Perfect for a cozy breakfast.',
   ingredients: [
@@ -38,7 +38,7 @@ export const mockRecipe: Recipe = {
 export const mockRecipes: Recipe[] = [
   {
     $id: '665f8c2e9e8a0a8e2b1d1',
-    title: 'Gluten-Free Pancakes',
+    title: 'Wheat (Gluten)-Free Pancakes',
     description:
       'Fluffy pancakes made without any gluten. Perfect for a cozy breakfast.',
     ingredients: [
@@ -68,7 +68,7 @@ export const mockRecipes: Recipe[] = [
     $id: '665f8c2e9e8a0a8e2b1d2',
     title: 'Dairy-Free Mac & Cheese',
     description:
-      'Creamy and cheesy without the dairy! Great for sensitive stomachs.',
+      'Creamy and cheesy without the milk! Great for sensitive stomachs.',
     ingredients: [
       '1 cup elbow pasta',
       '1 cup cashew cream',
@@ -85,8 +85,8 @@ export const mockRecipes: Recipe[] = [
     cookTime: 20,
     servings: 3,
     difficulty: Difficulty.Medium,
-    tags: ['dairy-free', 'comfort food'],
-    searchQuery: 'dairy free mac and cheese',
+    tags: ['milk-free', 'comfort food'],
+    searchQuery: 'milk free mac and cheese',
     isFavorite: true,
     imageUrl: 'https://source.unsplash.com/800x600/?mac-cheese',
     createdAt: new Date().toISOString(),

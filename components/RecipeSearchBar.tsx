@@ -21,26 +21,26 @@ import { addRecipeToUser, getRecipeUsingKey } from '@/services/recipe';
 import { mapRecipeDocumentToGeneratedRecipe } from '@/services/mappers';
 import { useAuth } from '@/context/AuthContext';
 
-const defaultRecipe = {
-  title: 'Gluten-Free Dairy-Free Banana Pancakes',
-  description: 'Fluffy pancakes made with almond flour and ripe bananas.',
-  ingredients: [
-    '1 cup almond flour',
-    '2 bananas',
-    '2 eggs',
-    '1 tsp baking powder',
-  ],
-  instructions: ['Mash bananas', 'Mix ingredients', 'Cook on skillet'],
-  prepTime: '10 minutes',
-  cookTime: '15 minutes',
-  servings: 4,
-  difficulty: 'easy',
-  tags: ['breakfast', 'gluten-free', 'dairy-free'],
-  allergens: [
-    { id: 2, name: 'eggs' },
-    { id: 1, name: 'almonds' },
-  ],
-};
+// const defaultRecipe = {
+//   title: 'Wheat (Gluten)-Free Milk-Free Banana Pancakes',
+//   description: 'Fluffy pancakes made with almond flour and ripe bananas.',
+//   ingredients: [
+//     '1 cup almond flour',
+//     '2 bananas',
+//     '2 eggs',
+//     '1 tsp baking powder',
+//   ],
+//   instructions: ['Mash bananas', 'Mix ingredients', 'Cook on skillet'],
+//   prepTime: '10 minutes',
+//   cookTime: '15 minutes',
+//   servings: 4,
+//   difficulty: 'easy',
+//   tags: ['breakfast', 'gluten-free', 'milk-free'],
+//   allergens: [
+//     { id: 2, name: 'eggs' },
+//     { id: 1, name: 'almonds' },
+//   ],
+// };
 
 export default function RecipeSearchBar() {
   const { colors: theme } = useTheme();
@@ -54,7 +54,7 @@ export default function RecipeSearchBar() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isExistingRecipe, setIsExistingRecipe] = useState(false);
-  const [generatedRecipe, setGeneratedRecipe] = useState<any>(defaultRecipe);
+  const [generatedRecipe, setGeneratedRecipe] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -91,7 +91,7 @@ export default function RecipeSearchBar() {
       const errorMessage =
         err.message === 'OpenAI API key is not configured'
           ? 'OpenAI API key is not configured. Please check your environment settings.'
-          : 'Failed to generate recipe. Please try again.';
+          : 'We were unable to generate a recipe. Please try again later.';
 
       setError(errorMessage);
       console.error('Recipe generation error:', err);
