@@ -106,7 +106,7 @@ export default function RegisterScreen() {
       setSubmitting(true);
       await register(email, password, name, selectedAllergens);
       requestAnimationFrame(() => {
-        router.replace('/explore');
+        router.replace('/(tabs)');
       });
     } catch (err: any) {
       setModalInfo({

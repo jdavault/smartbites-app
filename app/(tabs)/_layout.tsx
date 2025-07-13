@@ -1,42 +1,24 @@
-import { useEffect } from 'react';
+import { View, Platform } from 'react-native';
 import { Tabs } from 'expo-router';
-import { Platform } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
-import { router } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { Fonts, FontSizes } from '@/constants/Typography';
-
-// Import Lucide icons
-import {
-  Home,
-  Search,
-  PlusCircle,
-  Heart,
-  User,
-  BookOpen,
-  Bookmark,
-  ChefHat,
-  UtensilsCrossed,
-  CookingPot,
-  Settings,
-  Settings2,
-} from 'lucide-react-native';
-import OnlyAuth from '@/components/OnlyAuth';
 import { useTheme } from '@/context/ThemeContext';
+import ThemedLoader from '@/components/ThemedLoader';
+import { Search, Bookmark, Settings } from 'lucide-react-native';
+import OnlyAuth from '@/components/OnlyAuth';
 
 export default function TabLayout() {
   const { authChecked, isLoading } = useAuth();
   const { colors: theme } = useTheme();
-  useEffect(() => {
-    if (!isLoading && !authChecked) {
-      // Redirect to auth screen if not signed in
-      router.replace('/(auth)');
-    }
-  }, [authChecked, isLoading]);
 
   // Don't render tabs until we've checked auth state
   if (isLoading || !authChecked) {
-    return null;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ThemedLoader />
+      </View>
+    );
   }
 
   return (
@@ -72,17 +54,8 @@ export default function TabLayout() {
           headerShown: false,
         }}
       >
-        {/* <Tabs.Screen
-          name="home"
-          options={{
-            title: 'Home',
-            tabBarIcon: ({ color, size }) => (
-              <Home strokeWidth={2} color={color} size={size} />
-            ),
-          }}
-        /> */}
         <Tabs.Screen
-          name="explore"
+          name="index"
           options={{
             title: 'Home',
             tabBarIcon: ({ color, size }) => (

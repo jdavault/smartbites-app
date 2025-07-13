@@ -2,15 +2,17 @@ import { Stack, Redirect } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
 
 export default function AuthLayout() {
-  const { isSignedIn, isLoading } = useAuth();
+  const { user, authChecked, isLoading } = useAuth();
 
-  // While loading auth state, don't render anything
-  if (isLoading) return null;
+  const isSignedIn = !!user;
 
-  // If authenticated, redirect to the main app screen
-  if (isSignedIn) return <Redirect href="/tabs/explore" />;
+  // While loading, don't render anything
+  if (isLoading || !authChecked) return null;
 
-  // Otherwise, show the auth flow
+  // If authenticated, redirect to main app
+  if (isSignedIn) return <Redirect href="/(tabs)" />;
+
+  // Otherwise, show auth flow
   return (
     <Stack
       screenOptions={{

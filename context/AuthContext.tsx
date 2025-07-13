@@ -15,6 +15,7 @@ import {
   registerFullUser,
 } from '@/services/userService';
 import { Allergen } from '@/types/allergen';
+import { isLoggedIn, removeLoggedInFlag } from '@/utils/authStorage';
 const router = useRouter();
 
 type AuthContextType = {
@@ -115,7 +116,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const loadUser = async () => {
+      console.log('LoadUser....');
+      setIsLoading(true); // good practice
       try {
+        const loggedIn = await isLoggedIn();
+
+        if (!loggedIn) {
+          console.log('User not logged in flag');
+          setUser(null);
+          return; // skip fetching
+        }
+
         const user = await fetchCurrentUser();
         if (user) {
           const mappedUser: User = {
@@ -125,13 +136,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             firstName: user.name?.split(' ')[0],
             lastName: user.name?.split(' ').slice(1).join(' '),
           };
+          console.log('User returned from fetchCurrentUser:', mappedUser);
           setUser(mappedUser);
+        } else {
+          console.log('No user returned from fetchCurrentUser');
+          setUser(null);
+          await removeLoggedInFlag();
         }
-        setIsLoading(false);
-      } catch {
+      } catch (error) {
+        console.error('Error restoring user session:', error);
         setUser(null);
+        await removeLoggedInFlag(); // optional: clean up flag if session is invalid
       } finally {
-        setIsLoading(false); // ✅ ALWAYS set it
+        setIsLoading(false);
         setAuthChecked(true);
       }
     };

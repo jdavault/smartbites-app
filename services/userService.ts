@@ -3,6 +3,11 @@ import { User } from '@/types/user';
 import { saveUserAllergens } from './allergenServices';
 import { Allergen } from '@/types/allergen';
 import { UserClient } from '@/libs/appwrite/userClient';
+import {
+  saveLoggedInFlag,
+  removeLoggedInFlag,
+  isLoggedIn,
+} from '@/utils/authStorage';
 
 export async function login(email: string, password: string): Promise<User> {
   await AccountClient.deleteSession().catch((e) => {
@@ -10,11 +15,13 @@ export async function login(email: string, password: string): Promise<User> {
   });
 
   await AccountClient.createSession(email, password);
+  await saveLoggedInFlag();
   return await fetchCurrentUser();
 }
 
 export async function logout(): Promise<void> {
   await AccountClient.deleteSession();
+  await removeLoggedInFlag();
 }
 
 export async function create(email: string, password: string): Promise<User> {

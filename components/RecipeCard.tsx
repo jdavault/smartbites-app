@@ -23,7 +23,7 @@ const DEFAULT_IMAGE_URL =
 type RecipeCardProps = {
   readonly recipe: Recipe;
   readonly onToggleFavorite?: (id: string) => void;
-  readonly from?: 'explore' | 'saved';
+  readonly from?: 'home' | 'saved';
   readonly onSave?: (recipe: Recipe) => void;
   readonly isFeatured?: boolean;
 };
@@ -32,7 +32,7 @@ export default function RecipeCard(props: RecipeCardProps) {
   const {
     recipe,
     onToggleFavorite,
-    from = 'explore',
+    from = 'home',
     onSave,
     isFeatured = false,
   } = props;

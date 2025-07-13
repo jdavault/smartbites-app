@@ -30,7 +30,7 @@ const RecipeDetail = () => {
     if (from === 'saved') {
       router.replace('/saved');
     } else {
-      router.replace('/explore');
+      router.replace('/');
     }
   };
 

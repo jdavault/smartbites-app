@@ -81,9 +81,9 @@ export const RecipeClient = {
           const testIsFavorite =
             link.actions?.includes('favorite') ?? undefined;
 
-          console.log(
-            `RecipeClient: getRecipesByUser - testIsFavorite: ${testIsFavorite},  link.recipeId: ${link.recipeId}, link.actions: ${link.actions}`
-          );
+          // console.log(
+          //   `RecipeClient: getRecipesByUser - testIsFavorite: ${testIsFavorite},  link.recipeId: ${link.recipeId}, link.actions: ${link.actions}`
+          // );
           return {
             ...recipeDoc,
             allergens: validAllergens,

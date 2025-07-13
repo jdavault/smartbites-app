@@ -7,6 +7,7 @@ import {
   Platform,
   Image,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 
 import IconLogo from '@/assets/images/smart-bites-logo.png';
@@ -21,6 +22,7 @@ import { Fonts, FontSizes } from '@/constants/Typography';
 import { Allergen } from '@/types/allergen';
 import { Recipe } from '@/types/recipes';
 import { useCallback, useState } from 'react';
+import ThemedLoader from '@/components/ThemedLoader';
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -137,12 +139,7 @@ export default function HomeScreen() {
 
         {!hasAnyRecipes && (
           <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
-              You don’t have any recipes yet 🫣
-            </Text>
-            <Text style={{ color: theme.textSecondary, fontSize: 16 }}>
-              Let’s get started by exploring or creating something delicious!
-            </Text>
+            <ActivityIndicator size="large" color={theme.primary} />
           </View>
         )}
 
@@ -159,7 +156,7 @@ export default function HomeScreen() {
               {featuredRecipes.slice(0, 5).map((recipe, index) => (
                 <View key={recipe.$id + index} style={styles.cardWrapper}>
                   <RecipeCard
-                    from="explore"
+                    from="home"
                     recipe={recipe}
                     isFeatured={true}
                     onSave={handleSaveRecipe}
@@ -183,7 +180,7 @@ export default function HomeScreen() {
               {favorites.map((recipe, index) => (
                 <View key={recipe.$id + index} style={styles.cardWrapper}>
                   <RecipeCard
-                    from="explore"
+                    from="home"
                     recipe={recipe}
                     onToggleFavorite={toggleFavorite}
                   />
@@ -201,7 +198,7 @@ export default function HomeScreen() {
             <View style={styles.verticalList}>
               {recentRecipes.map((recipe, index) => (
                 <RecipeCard
-                  from="explore"
+                  from="home"
                   key={recipe.$id + index}
                   recipe={recipe}
                   onToggleFavorite={toggleFavorite}

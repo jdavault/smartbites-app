@@ -67,7 +67,7 @@ export default function SignInScreen() {
       const safeRedirect = getSafeRedirect(
         typeof redirect === 'string' && redirect.trim() !== ''
           ? redirect
-          : '/explore'
+          : '/(tabs)'
       );
       router.replace(safeRedirect as any);
     } catch (error: any) {

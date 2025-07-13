@@ -13,18 +13,34 @@ const OnlyAuth: React.FC<OnlyAuthProps> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  console.log('OnlyAuth:', { authChecked, user });
   useEffect(() => {
-    if (authChecked && user === null) {
-      router.replace(`/login?redirect?to=${encodeURIComponent(pathname)}`);
+    if (!authChecked) {
+      console.log('Auth not checked yet, skipping user check');
+      return;
+    }
+
+    const isInAuthFlow = pathname.startsWith('/(auth)');
+
+    if (authChecked && !user && !isInAuthFlow) {
+      if (!pathname || pathname === '/' || pathname === '/index') {
+        router.replace(`/`);
+      } else {
+        router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
+      }
     }
   }, [user, authChecked, router]);
 
-  if (!authChecked || !user) {
+  if (!authChecked) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ThemedLoader />
       </View>
     );
+  }
+
+  if (authChecked && !user) {
+    return null; // router is replacing
   }
 
   return <View style={{ flex: 1 }}>{children}</View>;
