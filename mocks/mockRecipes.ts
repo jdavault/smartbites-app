@@ -9,7 +9,7 @@ export enum Difficulty {
 export const mockRecipe: Recipe = {
   $id: '665f8c2e9e8a0a8e2b1d1',
   title: 'Wheat (Gluten)-Free Pancakes',
-  description:
+  headNote:
     'Fluffy pancakes made without any gluten. Perfect for a cozy breakfast.',
   ingredients: [
     '1 cup gluten-free flour',
@@ -39,7 +39,7 @@ export const mockRecipes: Recipe[] = [
   {
     $id: '665f8c2e9e8a0a8e2b1d1',
     title: 'Wheat (Gluten)-Free Pancakes',
-    description:
+    headNote:
       'Fluffy pancakes made without any gluten. Perfect for a cozy breakfast.',
     ingredients: [
       '1 cup gluten-free flour',
@@ -67,7 +67,7 @@ export const mockRecipes: Recipe[] = [
   {
     $id: '665f8c2e9e8a0a8e2b1d2',
     title: 'Dairy-Free Mac & Cheese',
-    description:
+    headNote:
       'Creamy and cheesy without the milk! Great for sensitive stomachs.',
     ingredients: [
       '1 cup elbow pasta',
@@ -95,7 +95,7 @@ export const mockRecipes: Recipe[] = [
   {
     $id: '665f8c2e9e8a0a8e2b1d3',
     title: 'Egg-Free French Toast',
-    description:
+    headNote:
       'Classic French toast without eggs, made with a chickpea flour batter.',
     ingredients: [
       '4 slices of bread',

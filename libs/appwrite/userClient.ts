@@ -40,7 +40,7 @@ export const UserClient = {
       const allergens = allergenDocs.documents.map((doc) => ({
         $id: doc.$id,
         name: doc.name,
-        description: doc.description,
+        description: doc.headNote,
       }));
       return allergens;
     } catch (error) {

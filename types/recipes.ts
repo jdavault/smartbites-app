@@ -12,7 +12,7 @@ export type RecipeInput = {
   isFavorite?: boolean;
   imageUrl?: string; // URL of the recipe image
   title: string;
-  description: string;
+  headNote: string;
   ingredients: string[];
   instructions: string[];
   allergens: string[];
@@ -33,7 +33,7 @@ export interface Recipe extends GeneratedRecipe {
 
 export interface GeneratedRecipe {
   title: string;
-  description: string;
+  headNote: string;
   ingredients: string[];
   instructions: string[];
   //allergens?: Allergen[];
@@ -102,7 +102,7 @@ export interface AllergenDocument extends Document {
 }
 export interface RecipeDocument extends Document {
   title: string;
-  description: string;
+  headNote: string;
   ingredients: string[];
   instructions: string[];
   prepTime: string;

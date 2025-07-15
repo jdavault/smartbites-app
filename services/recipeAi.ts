@@ -2,6 +2,7 @@ import { Difficulty, GeneratedRecipe } from '@/types/recipes';
 import { postRequest, axios, AxiosError } from '@/libs/axios/apiClient';
 import { ChatCompletionResponse, ChatImageResponse } from '@/types/openai';
 import { retryWithBackoff } from '@/libs/axios/retryWithBackOff';
+import { all } from 'axios';
 
 export async function generateRecipe(
   query: string,
@@ -15,13 +16,41 @@ export async function generateRecipe(
         : 'No specific allergens to avoid.';
 
     // Create a prompt for OpenAI
+
+    console.log('DEBUG --- RecipeAI: query:', query);
+    console.log('DEBUG --- RecipeAI: rawAllergens:', allergens);
+    console.log('DEBUG --- RecipeAI: formattedAllergens:', allergensText);
     const prompt = `
-      Create a detailed recipe for "${query}". ${allergensText}
+      You are a professional culinary recipe writer. Create a detailed, well-structured recipe for "${query}".
       
+      - ${allergensText}.
+      - Do not include any ingredients or instructions that contain these allergens.
+      - The "allergens" field must still list any potential allergens naturally present in the final recipe.
+      - Use the exact casing and spelling for each allergen as provided: Eggs, Fish, Milk, Peanuts, Sesame, Shellfish, Soybeans, Tree Nuts, Wheat (Gluten).
+      
+      Your goal is to write this recipe clearly and concisely, following best practices for real-world publication:
+
+        - Use consistent, standard culinary terms.
+        - Be specific with ingredient quantities, measurements, and units (e.g., "1 cup chopped fresh parsley").
+        - Include realistic prep and cook times in minutes (e.g., "15 minutes").
+        - Write clear, step-by-step instructions that guide any home cook to succeed — explain what to do, what to watch for, and how to fix common issues when possible.
+        - Use a descriptive, direct recipe title that is clear, searchable, and accurate — avoid ambiguity, mystery, or inaccurate dish names.
+        - Follow proper recipe title grammar: capitalize all words except articles, conjunctions, and prepositions.
+        - Avoid ambiguous title -- "what is loaded cauliflower casserole.  Be descriptive "Cauliflower and Broccoli Gratin with Garlic Breadcrumbs"
+        Return ONLY a valid JSON object in the following exact structure. Do not include any text or commentary outside the JSON:
+        - In recipe titles, all words except articles, propositions, and conjunctions should be capitalized -- e.g. Pigs in a Blanket, Scallion Dressing, Patty Melt with Cabbage on Rye
+        - Use Direct, descriptive Title - e.g. Avocado Toast with Smoked Salmon, Black Bean and Corn Quinoa
+        - Titles should highlight cooking method -- e.g. Roast Cauliflower, Grilled Sea Bass
+        - Use region or promotional title -- e.g. New England Johnny Cakes, Persian Rice, Ultimate Fudge Brownies
+        - Title can/should also highlight saving time - 10-minute salad, no-bake trail mix
+        - Title can/should reflect ingredients or health focus - Gluten-Free Mac n Cheese, Vegan Chocolate Chip Cookies
+        - Add “Rise Time” to recipes as needed. Ie hamburger buns, breads, pizza dough, etc.
+        
       Format the response as a JSON object with the following structure:
       {
         "title": "Recipe Title",
-        "description": "Brief description of the dish",
+        "headNote": "Brief, enticing description that explains the dish - context or extra tips",
+        "description": "Brief, enticing description that explains the dish - context or extra tips",
         "ingredients": ["Ingredient 1", "Ingredient 2", ...],
         "instructions": ["Step 1", "Step 2", ...],
         "prepTime": "Time needed for preparation",
@@ -30,13 +59,15 @@ export async function generateRecipe(
         "difficulty": "easy/medium/hard",
         "tags": ["tag1", "tag2", ...],
         "searchQuery": "search query used to generate this recipe",
-        "allergens": ["allergen1", "allergen2", ...]
+        "allergens": [${allergens}]
+        "notes": "for substitutions or troubleshooting"
+        "nutritionInfo": "nutrition information"
       }
       
-      Be careful to avoid including any allergens mentioned in the allergensText.
-      The allergens field should list potential allergens present in the recipe.
-      Make sure all times are in minutes format (e.g., "15 minutes").
-      Be specific with ingredient quantities. 
+    - The JSON must be syntactically valid — no trailing commas, no extra commentary.
+    - Ingredient names and instructions must be clear and practical.
+    - Titles must be direct, descriptive, and not misleading.
+    - Always be mindful that your recipe should teach and guide any home cook to success, regardless of their skill level.
     `;
 
     const response = await retryWithBackoff(() =>
@@ -70,7 +101,7 @@ export async function generateRecipe(
     const content = response.choices[0].message.content;
     console.log('DEBUG --- RecipeAI: content:', content);
     const recipeData = cleanAndParse(content);
-    console.log('DEBUG --- RecipeAI: Parsed Recipe Data:', recipeData);
+    //console.log('DEBUG --- RecipeAI: Parsed Recipe Data:', recipeData);
     const generatedRecipeData = {
       ...recipeData,
       searchQuery: query,
@@ -187,7 +218,7 @@ function generateMockRecipe(
 
   return {
     title,
-    description: `A delicious ${query} recipe that's easy to make and full of flavor.`,
+    headNote: `A delicious ${query} recipe that's easy to make and full of flavor.`,
     ingredients,
     instructions: [
       'Prep all ingredients before starting.',

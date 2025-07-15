@@ -71,7 +71,7 @@ const RecipeDetail = () => {
 
         <View style={styles.content}>
           <Text style={styles.title}>{recipe.title}</Text>
-          <Text style={styles.subtitle}>{recipe.description}</Text>
+          <Text style={styles.subtitle}>{recipe.headNote}</Text>
 
           <Spacer height={10} />
           <View style={styles.meta}>

@@ -23,7 +23,7 @@ import { useAuth } from '@/context/AuthContext';
 
 // const defaultRecipe = {
 //   title: 'Wheat (Gluten)-Free Milk-Free Banana Pancakes',
-//   description: 'Fluffy pancakes made with almond flour and ripe bananas.',
+//   headNote: 'Fluffy pancakes made with almond flour and ripe bananas.',
 //   ingredients: [
 //     '1 cup almond flour',
 //     '2 bananas',
@@ -168,7 +168,7 @@ export default function RecipeSearchBar() {
           <Text
             style={[styles.recipeDescription, { color: theme.textPrimary }]}
           >
-            {generatedRecipe.description}
+            {generatedRecipe.headNote}
           </Text>
 
           <View style={styles.metaInfo}>

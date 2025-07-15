@@ -12,7 +12,7 @@ export function mapRecipeDocumentToGeneratedRecipe(
 ): GeneratedRecipe {
   return {
     title: doc.title,
-    description: doc.description,
+    headNote: doc.headNote,
     ingredients: doc.ingredients,
     instructions: doc.instructions,
     allergens: doc.allergens,
@@ -35,7 +35,7 @@ export function mapRecipeDocument(
   return {
     $id: doc.$id,
     title: doc.title,
-    description: doc.description,
+    headNote: doc.headNote,
     ingredients: doc.ingredients,
     instructions: doc.instructions,
     prepTime: Number.parseInt(doc.prepTime),
@@ -57,7 +57,7 @@ export function mapDocumentToGeneratedRecipe(
 ): GeneratedRecipe {
   return {
     title: doc.title,
-    description: doc.description,
+    headNote: doc.headNote,
     ingredients: doc.ingredients,
     instructions: doc.instructions,
     prepTime: Number.parseInt(doc.prepTime),
@@ -77,7 +77,7 @@ export function mapGlobalRecipeDocument(doc: ResolvedRecipeDocument): Recipe {
   return {
     $id: doc.$id,
     title: doc.title,
-    description: doc.description,
+    headNote: doc.headNote,
     ingredients: doc.ingredients,
     instructions: doc.instructions,
     prepTime: Number.parseInt(doc.prepTime),
@@ -97,7 +97,7 @@ export function mapGlobalRecipeDocument(doc: ResolvedRecipeDocument): Recipe {
 export function mapRecipeInput(recipe: GeneratedRecipe): RecipeInput {
   return {
     title: recipe.title,
-    description: recipe.description,
+    headNote: recipe.headNote,
     ingredients: recipe.ingredients,
     instructions: recipe.instructions,
     prepTime: recipe.prepTime,

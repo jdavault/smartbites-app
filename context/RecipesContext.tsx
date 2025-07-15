@@ -211,7 +211,7 @@ export const RecipesProvider: React.FC<{ children: React.ReactNode }> = ({
     return filteredRecipes.filter(
       (recipe) =>
         recipe.title.toLowerCase().includes(lowerCaseQuery) ||
-        recipe.description.toLowerCase().includes(lowerCaseQuery) ||
+        recipe.headNote.toLowerCase().includes(lowerCaseQuery) ||
         recipe.tags.some((tag) => tag.toLowerCase().includes(lowerCaseQuery))
     );
   };

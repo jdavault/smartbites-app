@@ -431,7 +431,7 @@ export const RecipeClient = {
       return allergenDocs.documents.map((doc) => ({
         $id: doc.$id,
         name: doc.name,
-        description: doc.description,
+        description: doc.headNote,
       }));
     } catch (error) {
       console.error('Failed to fetch allergens:', error);

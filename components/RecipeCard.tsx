@@ -119,7 +119,7 @@ export default function RecipeCard(props: RecipeCardProps) {
           {recipe.title}
         </Text>
         <Text style={styles.description} numberOfLines={2}>
-          {recipe.description}
+          {recipe.headNote}
         </Text>
 
         <View style={styles.metaContainer}>
