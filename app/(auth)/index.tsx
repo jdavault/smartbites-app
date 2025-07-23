@@ -54,8 +54,6 @@ const Home: React.FC = () => {
 
       {Platform.OS === 'web' && (
         <Animated.View style={[styles.appStoreContainer, { opacity: buttonsAnim }]}>
-      {Platform.OS === 'web' && (
-        <Animated.View style={[styles.appStoreContainer, { opacity: buttonsAnim }]}>
           <Text style={[styles.appStoreTitle, { color: theme.textPrimary }]}>
             Get the SmartBites™ Mobile App
           </Text>
