@@ -141,7 +141,7 @@ const getStyles = (theme: any, height: number, insets: any) =>
       width: '100%',
       paddingHorizontal: Spacing.lg,
       alignItems: 'center',
-      marginTop: Spacing.lg,
+      marginTop: Spacing.sm,
       marginBottom: Spacing.md,
     },
     appStoreTitle: {
