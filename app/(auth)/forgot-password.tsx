@@ -37,8 +37,6 @@ export default function ForgotPasswordScreen() {
     title: '',
   });
 
-  const isSimulator =
-    Platform.OS !== 'web' && Device.isDevice === false && __DEV__;
   const router = useRouter();
   const { colors: theme } = useTheme();
 

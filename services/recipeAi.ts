@@ -78,14 +78,14 @@ export async function generateRecipe(
           messages: [
             {
               role: 'system',
-              content:
-                'You are a helpful culinary assistant that specializes in creating recipes. You always ensure recipes are detailed, practical, and follow proper cooking techniques. You are particularly mindful of allergens and dietary restrictions.',
+              content: prompt,
             },
             {
               role: 'user',
               content: prompt,
             },
           ],
+          max_tokens: 3000,
           temperature: 0.7,
         },
         {
