@@ -6,6 +6,8 @@ import {
   useWindowDimensions,
   Animated,
   Platform,
+  Text,
+  Linking,
 } from 'react-native';
 import { Link } from 'expo-router';
 import { useTheme } from '@/context/ThemeContext';
@@ -13,6 +15,7 @@ import ThemedLogo from '@/components/ThemedLogo';
 import ThemedText from '@/components/ThemedText';
 import Spacer from '@/components/Spacer';
 import { Spacing } from '@/constants/Spacing';
+import { Fonts, FontSizes } from '@/constants/Typography';
 import {
   EdgeInsets,
   SafeAreaView,
@@ -48,6 +51,43 @@ const Home: React.FC = () => {
       <Animated.View style={[styles.logoContainer, { opacity: logoAnim }]}>
         <ThemedLogo />
       </Animated.View>
+
+      {Platform.OS === 'web' && (
+        <Animated.View style={[styles.appStoreContainer, { opacity: buttonsAnim }]}>
+          <Text style={[styles.appStoreTitle, { color: theme.textPrimary }]}>
+            Get the SmartBites™ Mobile App
+          </Text>
+          <Text style={[styles.appStoreSubtitle, { color: theme.textSecondary }]}>
+            Download for the best experience on your phone
+          </Text>
+          
+          <View style={styles.storeButtonsContainer}>
+            <TouchableOpacity
+              style={[styles.storeButton, { backgroundColor: theme.card }]}
+              onPress={() => Linking.openURL('https://apps.apple.com/app/smartbites/id6745743999')}
+            >
+              <Text style={[styles.storeButtonText, { color: theme.textPrimary }]}>
+                📱 Download for iPhone
+              </Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={[styles.storeButton, { backgroundColor: theme.card }]}
+              onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=cooking.safeplate.allergyawarerecipefinder')}
+            >
+              <Text style={[styles.storeButtonText, { color: theme.textPrimary }]}>
+                🤖 Download for Android
+              </Text>
+            </TouchableOpacity>
+          </View>
+          
+          <View style={styles.webContinueContainer}>
+            <Text style={[styles.webContinueText, { color: theme.textSecondary }]}>
+              Or continue using the web version below
+            </Text>
+          </View>
+        </Animated.View>
+      )}
 
       <Animated.View style={[styles.buttonGroup, { opacity: buttonsAnim }]}>
         <Link href="/login" asChild>
@@ -97,6 +137,55 @@ const getStyles = (theme: any, height: number, insets: any) =>
     logoContainer: {
       marginTop: height * 0.08,
       alignItems: 'center',
+    },
+    appStoreContainer: {
+      width: '100%',
+      paddingHorizontal: Spacing.lg,
+      alignItems: 'center',
+      marginTop: Spacing.sm,
+      marginBottom: Spacing.md,
+    },
+    appStoreTitle: {
+      fontFamily: Fonts.heading,
+      fontSize: FontSizes.lg,
+      textAlign: 'center',
+      marginBottom: Spacing.xs,
+    },
+    appStoreSubtitle: {
+      fontFamily: Fonts.body,
+      fontSize: FontSizes.sm,
+      textAlign: 'center',
+      marginBottom: Spacing.lg,
+    },
+    storeButtonsContainer: {
+      flexDirection: 'row',
+      gap: Spacing.md,
+      marginBottom: Spacing.lg,
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    },
+    storeButton: {
+      paddingVertical: Spacing.md,
+      paddingHorizontal: Spacing.lg,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.border,
+      minWidth: 160,
+      alignItems: 'center',
+    },
+    storeButtonText: {
+      fontFamily: Fonts.body,
+      fontSize: FontSizes.sm,
+      textAlign: 'center',
+    },
+    webContinueContainer: {
+      alignItems: 'center',
+    },
+    webContinueText: {
+      fontFamily: Fonts.body,
+      fontSize: FontSizes.sm,
+      fontStyle: 'italic',
+      textAlign: 'center',
     },
     buttonGroup: {
       width: '100%',
