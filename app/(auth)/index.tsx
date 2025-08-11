@@ -52,7 +52,7 @@ const Home: React.FC = () => {
         <ThemedLogo />
       </Animated.View>
 
-      {Platform.OS === 'web' && (
+      {(Platform.OS === 'web' || typeof window !== 'undefined') && (
         <Animated.View style={[styles.appStoreContainer, { opacity: buttonsAnim }]}>
           <Text style={[styles.appStoreTitle, { color: theme.textPrimary }]}>
             Get the SmartBites™ Mobile App
