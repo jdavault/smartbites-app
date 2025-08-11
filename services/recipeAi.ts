@@ -44,7 +44,7 @@ export async function generateRecipe(
         - Use region or promotional title -- e.g. New England Johnny Cakes, Persian Rice, Ultimate Fudge Brownies
         - Title can/should also highlight saving time - 10-minute salad, no-bake trail mix
         - Title can/should reflect ingredients or health focus - Gluten-Free Mac n Cheese, Vegan Chocolate Chip Cookies
-        - Add “Rise Time” to recipes as needed. Ie hamburger buns, breads, pizza dough, etc.
+        - Add "Rise Time" to recipes as needed. Ie hamburger buns, breads, pizza dough, etc.
         
       Format the response as a JSON object with the following structure:
       {
@@ -91,7 +91,7 @@ export async function generateRecipe(
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY}`,
+            Authorization: `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY || ''}`,
           },
         }
       )
@@ -151,7 +151,7 @@ export async function generateRecipeImage(title: string): Promise<string> {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY}`,
+            Authorization: `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY || ''}`,
           },
         }
       )
